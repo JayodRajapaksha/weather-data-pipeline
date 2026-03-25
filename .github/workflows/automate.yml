@@ -1,0 +1,26 @@
+name: 12-Hour Weather Sync
+
+on:
+  schedule:
+    - cron: '0 */12 * * *'  # This is the "timer" (Every 12 hours)
+  workflow_dispatch:       # This lets you click a button to test it manually
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Script
+        env:
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: python main.py
